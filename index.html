@@ -13,6 +13,7 @@ var s=new Speedtest(); //create speedtest object
 var xhr=new XMLHttpRequest();
 var url_report='./backend/report.php';
 var milestone=0;
+var key_prefix=Date.parse(new Date());
 s.onupdate=function(data){ //callback to update data in UI
     I("ip").textContent=data.clientIp;
     I("dlText").textContent=(data.testState==1&&data.dlStatus==0)?"...":data.dlStatus;
@@ -26,9 +27,10 @@ s.onupdate=function(data){ //callback to update data in UI
 	var isp = ipIspArr[1];
 	var addr = ipIspArr[2] === undefined? '' :ipIspArr[2];
 	var progress = Math.floor(100*prog);
+	var key = key_prefix + "_" + ip;
 	if (progress > 20 && (progress % 10 == 0) && progress != milestone) {
 		console.log(progress);
-		var params = 'ip='+ip+'&isp='+isp+'&addr='+addr+'&dspeed='+I("dlText").textContent+'&uspeed='+I("ulText").textContent+'&ping='+I("pingText").textContent
+		var params = 'key='+key+'&ip='+ip+'&isp='+isp+'&addr='+addr+'&dspeed='+I("dlText").textContent+'&uspeed='+I("ulText").textContent+'&ping='+I("pingText").textContent
 						+'&jitter='+I("jitText").textContent;
 		xhr.timeout = 3000;
 		xhr.ontimeout = function (e) {
@@ -199,34 +201,34 @@ function I(id){return document.getElementById(id);}
     <div id="progressBar"><div id="progress"></div></div>
 	<div class="testGroup">
 		<div class="testArea">
-			<div class="testName">Download</div>
+			<div class="testName">下载速度</div>
 			<div id="dlText" class="meterText"></div>
 			<div class="unit">Mbps</div>
 		</div>
 		<div class="testArea">
-			<div class="testName">Upload</div>
+			<div class="testName">上传速度</div>
 			<div id="ulText" class="meterText"></div>
 			<div class="unit">Mbps</div>
 		</div>
 	</div>
 	<div class="testGroup">
 		<div class="testArea">
-			<div class="testName">Ping</div>
+			<div class="testName">延迟</div>
 			<div id="pingText" class="meterText"></div>
 			<div class="unit">ms</div>
 		</div>
 		<div class="testArea">
-			<div class="testName">Jitter</div>
+			<div class="testName">抖动</div>
 			<div id="jitText" class="meterText"></div>
 			<div class="unit">ms</div>
 		</div>
 	</div>
 	<div id="ipArea">
-		IP Address: <span id="ip"></span>
+		IP地址: <span id="ip"></span>
 	</div>
 </div>
-<p><a href="./results.html">查看测速记录</a></p>
-<p><a href="https://github.com/BadApple9/speedtest-x">speedtest-x 项目地址</a></p>
+<p><a href="./results.html" target="_blank">查看测速记录</a></p>
+<p><a href="https://github.com/BadApple9/speedtest-x" target="_blank">speedtest-x 项目地址</a></p>
 <script type="text/javascript">
     initUI();
 </script>
